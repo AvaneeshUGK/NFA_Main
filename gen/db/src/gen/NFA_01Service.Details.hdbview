@@ -1,0 +1,12 @@
+VIEW NFA_01Service_Details AS SELECT
+  Details_0.event_id,
+  Details_0.Itemname,
+  Details_0.Description,
+  Details_0.Quantity,
+  Details_0.Unit,
+  Details_0.Guruprasad,
+  Details_0.Supplier_Demo2
+FROM NFA_01_Details AS Details_0
+WITH ASSOCIATIONS (
+  MANY TO ONE JOIN NFA_01Service_Source_Events AS source_Event ON (source_Event.event_id = event_id)
+)

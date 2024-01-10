@@ -1,0 +1,1294 @@
+{
+  "namespace": "NFA_01",
+  "definitions": {
+    "NFA_01.Source_Events": {
+      "kind": "entity",
+      "elements": {
+        "event_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "Srcevtname": {
+          "type": "cds.String"
+        },
+        "Createdby": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "Desc": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Version": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "criticality": {
+          "type": "cds.Integer"
+        },
+        "questionaire": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "NFA_01.Questionaire",
+          "on": [
+            {
+              "ref": [
+                "questionaire",
+                "source_Events"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "details": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "NFA_01.Details",
+          "on": [
+            {
+              "ref": [
+                "details",
+                "source_Event"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "fieldToggle": {
+          "type": "cds.Boolean"
+        }
+      }
+    },
+    "NFA_01.Details": {
+      "kind": "entity",
+      "elements": {
+        "event_id": {
+          "type": "cds.String"
+        },
+        "Itemname": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Description": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Quantity": {
+          "type": "cds.String"
+        },
+        "Unit": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Guruprasad": {
+          "type": "cds.Decimal",
+          "precision": 8,
+          "scale": 2
+        },
+        "Supplier_Demo2": {
+          "type": "cds.Decimal",
+          "precision": 8,
+          "scale": 2
+        },
+        "source_Event": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "NFA_01.Source_Events",
+          "on": [
+            {
+              "ref": [
+                "source_Event",
+                "event_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "event_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "NFA_01.Questionaire": {
+      "kind": "entity",
+      "elements": {
+        "event_id": {
+          "type": "cds.String"
+        },
+        "question": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Guruprasad": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Supplier_Demo2": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "source_Events": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "NFA_01.Source_Events",
+          "on": [
+            {
+              "ref": [
+                "source_Events",
+                "event_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "event_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "NFA_01.Files": {
+      "kind": "entity",
+      "includes": [
+        "cuid"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "content": {
+          "@Core.MediaType": {
+            "=": "mediaType"
+          },
+          "type": "cds.LargeBinary"
+        },
+        "mediaType": {
+          "@Core.IsMediaType": true,
+          "type": "cds.String"
+        },
+        "fileName": {
+          "type": "cds.String"
+        },
+        "size": {
+          "type": "cds.Integer"
+        },
+        "url": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "NFA_01Service": {
+      "@source": "srv/service.cds",
+      "kind": "service",
+      "@path": "/service/NFA_01"
+    },
+    "NFA_01Service.Source_Events": {
+      "kind": "entity",
+      "@readonly": true,
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Source Event Name",
+          "Value": {
+            "=": "Srcevtname"
+          },
+          "Criticality": {
+            "#": "Information"
+          },
+          "CriticalityRepresentation": {
+            "#": "WithoutIcon"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Description",
+          "Value": {
+            "=": "Desc"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Created By",
+          "Value": {
+            "=": "Createdby"
+          },
+          "@UI.Hidden": true
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "status"
+          },
+          "Label": "Status",
+          "Criticality": {
+            "=": "criticality"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Version",
+          "Value": {
+            "=": "Version"
+          },
+          "@UI.Importance": {
+            "#": "Medium"
+          }
+        }
+      ],
+      "@UI.FieldGroup#GeneratedGroup1.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#GeneratedGroup1.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Label": "Source Event Name",
+          "Value": {
+            "=": "Srcevtname"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "Description",
+          "Value": {
+            "=": "Desc"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "Questionnaire",
+          "ID": "Questionnaire",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "Questions",
+              "ID": "Questions",
+              "Target": "questionaire/@UI.LineItem#Questions"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "Details",
+          "ID": "Details",
+          "Target": "questionaire/@UI.LineItem#Details"
+        }
+      ],
+      "@UI.Identification": [
+        {
+          "$Type": "UI.DataFieldForIntentBasedNavigation",
+          "SemanticObject": "PreviewAppHeaderDisplay",
+          "Action": "display",
+          "Label": "Preview",
+          "Mapping": [
+            {
+              "$Type": "Common.SemanticObjectMappingType",
+              "SemanticObjectProperty": "event_id",
+              "LocalProperty": {
+                "=": "event_id"
+              }
+            }
+          ]
+        },
+        {
+          "$Type": "UI.DataFieldForIntentBasedNavigation",
+          "SemanticObject": "VersionAssociationDisplay",
+          "Action": "display",
+          "Label": "Version"
+        }
+      ],
+      "@UI.FieldGroup#QuestForm.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#QuestForm.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "questionaire.Guruprasad"
+          },
+          "Label": "Guruprasad"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "questionaire.question"
+          },
+          "Label": "question"
+        }
+      ],
+      "@UI.HeaderFacets": [
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "Vendor Comparison",
+          "ID": "VendorComaprison",
+          "Target": "@UI.FieldGroup#VendorComaprison"
+        }
+      ],
+      "@UI.FieldGroup#VendorComaprison.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#VendorComaprison.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "Srcevtname"
+          },
+          "Label": "Source Event Name"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "Desc"
+          },
+          "Label": "Description"
+        }
+      ],
+      "@UI.FieldGroup#Details.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#Details.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Itemname"
+          },
+          "Label": "Itemname"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Description"
+          },
+          "Label": "Description"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Quantity"
+          },
+          "Label": "Quantity"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Unit"
+          },
+          "Label": "Unit"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Guruprasad"
+          },
+          "Label": "Guruprasad"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "details.Supplier_Demo2"
+          },
+          "Label": "Supplier_Demo2"
+        }
+      ],
+      "@UI.SelectionPresentationVariant#table.$Type": "UI.SelectionPresentationVariantType",
+      "@UI.SelectionPresentationVariant#table.PresentationVariant.$Type": "UI.PresentationVariantType",
+      "@UI.SelectionPresentationVariant#table.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.SelectionPresentationVariant#table.SelectionVariant.$Type": "UI.SelectionVariantType",
+      "@UI.SelectionPresentationVariant#table.SelectionVariant.SelectOptions": [],
+      "@UI.SelectionPresentationVariant#tableView.$Type": "UI.SelectionPresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView.PresentationVariant.$Type": "UI.PresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView.PresentationVariant.Visualizations": [
+        "@UI.LineItem"
+      ],
+      "@UI.SelectionPresentationVariant#tableView.SelectionVariant.$Type": "UI.SelectionVariantType",
+      "@UI.SelectionPresentationVariant#tableView.SelectionVariant.SelectOptions": [],
+      "@UI.SelectionPresentationVariant#tableView.Text": "Table View",
+      "@UI.LineItem#tableView": [],
+      "@UI.SelectionPresentationVariant#tableView1.$Type": "UI.SelectionPresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView1.PresentationVariant.$Type": "UI.PresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView1.PresentationVariant.Visualizations": [
+        "@UI.LineItem#tableView"
+      ],
+      "@UI.SelectionPresentationVariant#tableView1.SelectionVariant.$Type": "UI.SelectionVariantType",
+      "@UI.SelectionPresentationVariant#tableView1.SelectionVariant.SelectOptions": [],
+      "@UI.SelectionPresentationVariant#tableView1.Text": "Table View 1",
+      "@UI.LineItem#tableView1": [],
+      "@UI.SelectionPresentationVariant#tableView2.$Type": "UI.SelectionPresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView2.PresentationVariant.$Type": "UI.PresentationVariantType",
+      "@UI.SelectionPresentationVariant#tableView2.PresentationVariant.Visualizations": [
+        "@UI.LineItem#tableView1"
+      ],
+      "@UI.SelectionPresentationVariant#tableView2.SelectionVariant.$Type": "UI.SelectionVariantType",
+      "@UI.SelectionPresentationVariant#tableView2.SelectionVariant.SelectOptions": [],
+      "@UI.SelectionPresentationVariant#tableView2.Text": "Table View 2",
+      "projection": {
+        "from": {
+          "ref": [
+            "NFA_01.Source_Events"
+          ]
+        }
+      },
+      "elements": {
+        "event_id": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "Srcevtname": {
+          "type": "cds.String"
+        },
+        "Createdby": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "Desc": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Version": {
+          "@Common.SemanticObject": "VersionAssociationDisplay",
+          "@Common.SemanticObjectMapping": [
+            {
+              "$Type": "Common.SemanticObjectMappingType",
+              "LocalProperty": {
+                "=": "event_id"
+              },
+              "SemanticObjectProperty": "event_id"
+            }
+          ],
+          "type": "cds.String",
+          "length": 10
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "criticality": {
+          "type": "cds.Integer"
+        },
+        "questionaire": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "NFA_01Service.Questionaire",
+          "on": [
+            {
+              "ref": [
+                "questionaire",
+                "source_Events"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "details": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "NFA_01Service.Details",
+          "on": [
+            {
+              "ref": [
+                "details",
+                "source_Event"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "fieldToggle": {
+          "type": "cds.Boolean"
+        }
+      }
+    },
+    "NFA_01Service.Questionaire": {
+      "kind": "entity",
+      "@readonly": true,
+      "@UI.LineItem#Questionnaire": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "question"
+          },
+          "Label": "question"
+        }
+      ],
+      "@UI.LineItem#Questions": [],
+      "@UI.LineItem#Details": [],
+      "projection": {
+        "from": {
+          "ref": [
+            "NFA_01.Questionaire"
+          ]
+        }
+      },
+      "elements": {
+        "event_id": {
+          "type": "cds.String"
+        },
+        "question": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Guruprasad": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Supplier_Demo2": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "source_Events": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "NFA_01Service.Source_Events",
+          "on": [
+            {
+              "ref": [
+                "source_Events",
+                "event_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "event_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "NFA_01Service.Details": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@UI.LineItem#Details": [],
+      "@UI.LineItem#Details1": [],
+      "projection": {
+        "from": {
+          "ref": [
+            "NFA_01.Details"
+          ]
+        }
+      },
+      "elements": {
+        "event_id": {
+          "type": "cds.String"
+        },
+        "Itemname": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Description": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Quantity": {
+          "type": "cds.String"
+        },
+        "Unit": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "Guruprasad": {
+          "type": "cds.Decimal",
+          "precision": 8,
+          "scale": 2
+        },
+        "Supplier_Demo2": {
+          "type": "cds.Decimal",
+          "precision": 8,
+          "scale": 2
+        },
+        "source_Event": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": 1
+          },
+          "target": "NFA_01Service.Source_Events",
+          "on": [
+            {
+              "ref": [
+                "source_Event",
+                "event_id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "event_id"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "NFA_01Service.Files": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "NFA_01.Files"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "content": {
+          "@Core.MediaType": {
+            "=": "mediaType"
+          },
+          "type": "cds.LargeBinary"
+        },
+        "mediaType": {
+          "@Core.IsMediaType": true,
+          "type": "cds.String"
+        },
+        "fileName": {
+          "type": "cds.String"
+        },
+        "size": {
+          "type": "cds.Integer"
+        },
+        "url": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "NFA_01Service.readSrcEvents": {
+      "kind": "function",
+      "params": {
+        "event_id": {
+          "type": "cds.String"
+        }
+      },
+      "returns": {
+        "elements": {}
+      }
+    },
+    "NFA_01Service.generatePdf": {
+      "kind": "function",
+      "returns": {
+        "type": "cds.String"
+      }
+    },
+    "Language": {
+      "kind": "type",
+      "@title": "{i18n>Language}",
+      "@description": "{i18n>LanguageCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Currency": {
+      "kind": "type",
+      "@title": "{i18n>Currency}",
+      "@description": "{i18n>CurrencyCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Country": {
+      "kind": "type",
+      "@title": "{i18n>Country}",
+      "@description": "{i18n>CountryCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "sap.common": {
+      "kind": "context"
+    },
+    "sap.common.Locale": {
+      "kind": "type",
+      "@title": "{i18n>LanguageCode}",
+      "type": "cds.String",
+      "length": 14
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "minorUnit": {
+          "@title": "{i18n>CurrencyMinorUnit}",
+          "type": "cds.Int16"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.CodeList": {
+      "kind": "aspect",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        }
+      }
+    },
+    "sap.common.TextsAspect": {
+      "kind": "aspect",
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        }
+      }
+    },
+    "cuid": {
+      "kind": "aspect",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "managed": {
+      "kind": "aspect",
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        }
+      }
+    },
+    "temporal": {
+      "kind": "aspect",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.Timestamp"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "User": {
+      "kind": "type",
+      "@title": "{i18n>UserID}",
+      "@description": "{i18n>UserID.Description}",
+      "type": "cds.String",
+      "length": 255
+    },
+    "extensible": {
+      "kind": "aspect",
+      "elements": {
+        "extensions__": {
+          "@cds.api.ignore": true,
+          "type": "cds.String"
+        }
+      }
+    },
+    "sap.common.Languages.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        }
+      }
+    },
+    "sap.common.Countries.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Currencies.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    }
+  },
+  "meta": {
+    "creator": "CDS Compiler v4.1.2",
+    "flavor": "inferred"
+  },
+  "$version": "2.0"
+}

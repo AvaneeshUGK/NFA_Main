@@ -1,0 +1,14 @@
+COLUMN TABLE NFA_01_Source_Events (
+  event_id NVARCHAR(5000) NOT NULL,
+  Srcevtname NVARCHAR(5000),
+  Createdby NVARCHAR(50),
+  Desc NVARCHAR(100),
+  Version NVARCHAR(10),
+  status NVARCHAR(100),
+  criticality INTEGER,
+  fieldToggle BOOLEAN,
+  PRIMARY KEY(event_id)
+) WITH ASSOCIATIONS (
+  MANY TO MANY JOIN NFA_01_Questionaire AS questionaire ON (event_id = questionaire.event_id),
+  MANY TO MANY JOIN NFA_01_Details AS details ON (event_id = details.event_id)
+)

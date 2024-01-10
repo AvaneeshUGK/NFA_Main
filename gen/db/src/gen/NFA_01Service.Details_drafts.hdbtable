@@ -1,0 +1,16 @@
+COLUMN TABLE NFA_01Service_Details_drafts (
+  event_id NVARCHAR(5000) NULL,
+  Itemname NVARCHAR(100) NULL,
+  Description NVARCHAR(100) NULL,
+  Quantity NVARCHAR(5000) NULL,
+  Unit NVARCHAR(100) NULL,
+  Guruprasad DECIMAL(8, 2) NULL,
+  Supplier_Demo2 DECIMAL(8, 2) NULL,
+  IsActiveEntity BOOLEAN,
+  HasActiveEntity BOOLEAN,
+  HasDraftEntity BOOLEAN,
+  DraftAdministrativeData_DraftUUID NVARCHAR(36) NOT NULL
+) WITH ASSOCIATIONS (
+  MANY TO ONE JOIN NFA_01Service_Source_Events AS source_Event ON (source_Event.event_id = event_id),
+  MANY TO ONE JOIN NFA_01Service_DraftAdministrativeData AS DraftAdministrativeData ON (DraftAdministrativeData.DraftUUID = DraftAdministrativeData_DraftUUID)
+)

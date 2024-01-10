@@ -1,0 +1,56 @@
+{
+    "name": "NFA_01",
+    "version": "1.0.0",
+    "description": "My SAP project",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap-cloud-sdk/http-client": "^3.4.0",
+        "@sap-cloud-sdk/util": "^3.4.0",
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "@sap/hdi-deploy": "4.8.0",
+        "@sap/low-code-event-handler": "^1.2.3",
+        "@sap/mdk-tools": "^1.0.2",
+        "@sap/xsenv": "^4.0.0",
+        "@sap/xssec": "^3.3.3",
+        "blob-stream": "^0.1.3",
+        "core-util-is": "^1.0.3",
+        "dom-to-image": "^2.6.0",
+        "express": "^4",
+        "hdb": "^0.19.5",
+        "jspdf": "^2.5.1",
+        "passport": "^0.6.0",
+        "pdfkit": "^0.13.0",
+        "ts-node": "^10.9.2"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "UI5-1.108",
+        "@types/blob-stream": "^0.1.31",
+        "@types/pdfkit": "^0.12.12"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-NFA_01.NFA": "cds watch --open NFA_01.NFA/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "cds": {
+        "requires": {
+            "[production]": {
+                "db": "hana"
+            },
+            "app-service": {
+                "impl": "@sap/low-code-event-handler"
+            }
+        },
+        "features": {
+            "fetch_csrf": true
+        }
+    },
+    "lcap": true,
+    "sapux": [
+        "app/NFA_01.NFA"
+    ]
+}

@@ -1,0 +1,11 @@
+COLUMN TABLE NFA_01_Details (
+  event_id NVARCHAR(5000),
+  Itemname NVARCHAR(100),
+  Description NVARCHAR(100),
+  Quantity NVARCHAR(5000),
+  Unit NVARCHAR(100),
+  Guruprasad DECIMAL(8, 2),
+  Supplier_Demo2 DECIMAL(8, 2)
+) WITH ASSOCIATIONS (
+  MANY TO ONE JOIN NFA_01_Source_Events AS source_Event ON (source_Event.event_id = event_id)
+)

@@ -1,0 +1,31 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "NFA_01_QUESTIONAIRE",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "NFA_01-Questionaire.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "EVENT_ID",
+          "QUESTION",
+          "GURUPRASAD",
+          "SUPPLIER_DEMO2"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "EVENT_ID": "event_id",
+        "QUESTION": "question",
+        "GURUPRASAD": "Guruprasad",
+        "SUPPLIER_DEMO2": "Supplier_Demo2"
+      }
+    }
+  ]
+}

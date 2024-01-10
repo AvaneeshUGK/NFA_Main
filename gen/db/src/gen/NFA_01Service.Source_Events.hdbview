@@ -1,0 +1,14 @@
+VIEW NFA_01Service_Source_Events AS SELECT
+  Source_Events_0.event_id,
+  Source_Events_0.Srcevtname,
+  Source_Events_0.Createdby,
+  Source_Events_0.Desc,
+  Source_Events_0.Version,
+  Source_Events_0.status,
+  Source_Events_0.criticality,
+  Source_Events_0.fieldToggle
+FROM NFA_01_Source_Events AS Source_Events_0
+WITH ASSOCIATIONS (
+  MANY TO MANY JOIN NFA_01Service_Questionaire AS questionaire ON (event_id = questionaire.event_id),
+  MANY TO MANY JOIN NFA_01Service_Details AS details ON (event_id = details.event_id)
+)

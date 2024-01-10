@@ -1,0 +1,8 @@
+VIEW NFA_01Service_Files AS SELECT
+  Files_0.ID,
+  Files_0.content,
+  Files_0.mediaType,
+  Files_0.fileName,
+  Files_0.size,
+  Files_0.url
+FROM NFA_01_Files AS Files_0

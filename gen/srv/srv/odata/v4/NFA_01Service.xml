@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="NFA_01Service" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Source_Events" EntityType="NFA_01Service.Source_Events">
+          <NavigationPropertyBinding Path="questionaire" Target="Questionaire"/>
+          <NavigationPropertyBinding Path="details" Target="Details"/>
+        </EntitySet>
+        <EntitySet Name="Questionaire" EntityType="NFA_01Service.Questionaire">
+          <NavigationPropertyBinding Path="source_Events" Target="Source_Events"/>
+        </EntitySet>
+        <EntitySet Name="Details" EntityType="NFA_01Service.Details">
+          <NavigationPropertyBinding Path="source_Event" Target="Source_Events"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="Details"/>
+        </EntitySet>
+        <EntitySet Name="Files" EntityType="NFA_01Service.Files"/>
+        <FunctionImport Name="readSrcEvents" Function="NFA_01Service.readSrcEvents"/>
+        <FunctionImport Name="generatePdf" Function="NFA_01Service.generatePdf"/>
+      </EntityContainer>
+      <EntityType Name="Source_Events">
+        <Key>
+          <PropertyRef Name="event_id"/>
+        </Key>
+        <Property Name="event_id" Type="Edm.String" Nullable="false"/>
+        <Property Name="Srcevtname" Type="Edm.String"/>
+        <Property Name="Createdby" Type="Edm.String" MaxLength="50"/>
+        <Property Name="Desc" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Version" Type="Edm.String" MaxLength="10"/>
+        <Property Name="status" Type="Edm.String" MaxLength="100"/>
+        <Property Name="criticality" Type="Edm.Int32"/>
+        <NavigationProperty Name="questionaire" Type="Collection(NFA_01Service.Questionaire)" Partner="source_Events"/>
+        <NavigationProperty Name="details" Type="Collection(NFA_01Service.Details)" Partner="source_Event"/>
+        <Property Name="fieldToggle" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="Questionaire">
+        <Property Name="event_id" Type="Edm.String"/>
+        <Property Name="question" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Guruprasad" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Supplier_Demo2" Type="Edm.String" MaxLength="100"/>
+        <NavigationProperty Name="source_Events" Type="NFA_01Service.Source_Events" Partner="questionaire">
+          <ReferentialConstraint Property="event_id" ReferencedProperty="event_id"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Details">
+        <Key>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="event_id" Type="Edm.String"/>
+        <Property Name="Itemname" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Description" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Quantity" Type="Edm.String"/>
+        <Property Name="Unit" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Guruprasad" Type="Edm.Decimal" Scale="2" Precision="8"/>
+        <Property Name="Supplier_Demo2" Type="Edm.Decimal" Scale="2" Precision="8"/>
+        <NavigationProperty Name="source_Event" Type="NFA_01Service.Source_Events" Partner="details">
+          <ReferentialConstraint Property="event_id" ReferencedProperty="event_id"/>
+        </NavigationProperty>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="NFA_01Service.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="NFA_01Service.Details"/>
+      </EntityType>
+      <EntityType Name="Files">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="content" Type="Edm.Stream"/>
+        <Property Name="mediaType" Type="Edm.String"/>
+        <Property Name="fileName" Type="Edm.String"/>
+        <Property Name="size" Type="Edm.Int32"/>
+        <Property Name="url" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <ComplexType Name="return_NFA_01Service_readSrcEvents"/>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="NFA_01Service.Details"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="NFA_01Service.Details"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="NFA_01Service.Details"/>
+        <ReturnType Type="NFA_01Service.Details"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="NFA_01Service.Details"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="NFA_01Service.Details"/>
+      </Action>
+      <Function Name="readSrcEvents" IsBound="false" IsComposable="false">
+        <Parameter Name="event_id" Type="Edm.String"/>
+        <ReturnType Type="NFA_01Service.return_NFA_01Service_readSrcEvents"/>
+      </Function>
+      <Function Name="generatePdf" IsBound="false" IsComposable="false">
+        <ReturnType Type="Edm.String"/>
+      </Function>
+      <Annotations Target="NFA_01Service.Source_Events">
+        <Annotation Term="UI.LineItem">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Source Event Name"/>
+              <PropertyValue Property="Value" Path="Srcevtname"/>
+              <PropertyValue Property="Criticality" EnumMember="UI.CriticalityType/Information"/>
+              <PropertyValue Property="CriticalityRepresentation" EnumMember="UI.CriticalityRepresentationType/WithoutIcon"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Description"/>
+              <PropertyValue Property="Value" Path="Desc"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Created By"/>
+              <PropertyValue Property="Value" Path="Createdby"/>
+              <Annotation Term="UI.Hidden" Bool="true"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="status"/>
+              <PropertyValue Property="Label" String="Status"/>
+              <PropertyValue Property="Criticality" Path="criticality"/>
+            </Record>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Label" String="Version"/>
+              <PropertyValue Property="Value" Path="Version"/>
+              <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/Medium"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="GeneratedGroup1">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Source Event Name"/>
+                  <PropertyValue Property="Value" Path="Srcevtname"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Label" String="Description"/>
+                  <PropertyValue Property="Value" Path="Desc"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.Facets">
+          <Collection>
+            <Record Type="UI.CollectionFacet">
+              <PropertyValue Property="Label" String="Questionnaire"/>
+              <PropertyValue Property="ID" String="Questionnaire"/>
+              <PropertyValue Property="Facets">
+                <Collection>
+                  <Record Type="UI.ReferenceFacet">
+                    <PropertyValue Property="Label" String="Questions"/>
+                    <PropertyValue Property="ID" String="Questions"/>
+                    <PropertyValue Property="Target" AnnotationPath="questionaire/@UI.LineItem#Questions"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Details"/>
+              <PropertyValue Property="ID" String="Details"/>
+              <PropertyValue Property="Target" AnnotationPath="questionaire/@UI.LineItem#Details"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataFieldForIntentBasedNavigation">
+              <PropertyValue Property="SemanticObject" String="PreviewAppHeaderDisplay"/>
+              <PropertyValue Property="Action" String="display"/>
+              <PropertyValue Property="Label" String="Preview"/>
+              <PropertyValue Property="Mapping">
+                <Collection>
+                  <Record Type="Common.SemanticObjectMappingType">
+                    <PropertyValue Property="SemanticObjectProperty" String="event_id"/>
+                    <PropertyValue Property="LocalProperty" PropertyPath="event_id"/>
+                  </Record>
+                </Collection>
+              </PropertyValue>
+            </Record>
+            <Record Type="UI.DataFieldForIntentBasedNavigation">
+              <PropertyValue Property="SemanticObject" String="VersionAssociationDisplay"/>
+              <PropertyValue Property="Action" String="display"/>
+              <PropertyValue Property="Label" String="Version"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="QuestForm">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="questionaire/Guruprasad"/>
+                  <PropertyValue Property="Label" String="Guruprasad"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="questionaire/question"/>
+                  <PropertyValue Property="Label" String="question"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.HeaderFacets">
+          <Collection>
+            <Record Type="UI.ReferenceFacet">
+              <PropertyValue Property="Label" String="Vendor Comparison"/>
+              <PropertyValue Property="ID" String="VendorComaprison"/>
+              <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#VendorComaprison"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="VendorComaprison">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="Srcevtname"/>
+                  <PropertyValue Property="Label" String="Source Event Name"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="Desc"/>
+                  <PropertyValue Property="Label" String="Description"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.FieldGroup" Qualifier="Details">
+          <Record Type="UI.FieldGroupType">
+            <PropertyValue Property="Data">
+              <Collection>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Itemname"/>
+                  <PropertyValue Property="Label" String="Itemname"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Description"/>
+                  <PropertyValue Property="Label" String="Description"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Quantity"/>
+                  <PropertyValue Property="Label" String="Quantity"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Unit"/>
+                  <PropertyValue Property="Label" String="Unit"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Guruprasad"/>
+                  <PropertyValue Property="Label" String="Guruprasad"/>
+                </Record>
+                <Record Type="UI.DataField">
+                  <PropertyValue Property="Value" Path="details/Supplier_Demo2"/>
+                  <PropertyValue Property="Label" String="Supplier_Demo2"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="table">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem" Qualifier="tableView">
+          <Collection/>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView1">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem#tableView</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View 1"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.LineItem" Qualifier="tableView1">
+          <Collection/>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView2">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem#tableView1</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View 2"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.EntityContainer/Source_Events">
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="table">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView1">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem#tableView</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View 1"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="UI.SelectionPresentationVariant" Qualifier="tableView2">
+          <Record Type="UI.SelectionPresentationVariantType">
+            <PropertyValue Property="PresentationVariant">
+              <Record Type="UI.PresentationVariantType">
+                <PropertyValue Property="Visualizations">
+                  <Collection>
+                    <AnnotationPath>@UI.LineItem#tableView1</AnnotationPath>
+                  </Collection>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="SelectionVariant">
+              <Record Type="UI.SelectionVariantType">
+                <PropertyValue Property="SelectOptions">
+                  <Collection/>
+                </PropertyValue>
+              </Record>
+            </PropertyValue>
+            <PropertyValue Property="Text" String="Table View 2"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Source_Events/Version">
+        <Annotation Term="Common.SemanticObject" String="VersionAssociationDisplay"/>
+        <Annotation Term="Common.SemanticObjectMapping">
+          <Collection>
+            <Record Type="Common.SemanticObjectMappingType">
+              <PropertyValue Property="LocalProperty" PropertyPath="event_id"/>
+              <PropertyValue Property="SemanticObjectProperty" String="event_id"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Questionaire">
+        <Annotation Term="UI.LineItem" Qualifier="Questionnaire">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="question"/>
+              <PropertyValue Property="Label" String="question"/>
+            </Record>
+          </Collection>
+        </Annotation>
+        <Annotation Term="UI.LineItem" Qualifier="Questions">
+          <Collection/>
+        </Annotation>
+        <Annotation Term="UI.LineItem" Qualifier="Details">
+          <Collection/>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.EntityContainer/Questionaire">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Details">
+        <Annotation Term="UI.LineItem" Qualifier="Details">
+          <Collection/>
+        </Annotation>
+        <Annotation Term="UI.LineItem" Qualifier="Details1">
+          <Collection/>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.EntityContainer/Details">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="NFA_01Service.draftActivate"/>
+            <PropertyValue Property="EditAction" String="NFA_01Service.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="NFA_01Service.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Details/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Details/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Details/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Details/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Files/content">
+        <Annotation Term="Core.MediaType" Path="mediaType"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.Files/mediaType">
+        <Annotation Term="Core.IsMediaType" Bool="true"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData">
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/DraftUUID">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/CreationDateTime">
+        <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/CreatedByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/DraftIsCreatedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/LastChangeDateTime">
+        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/LastChangedByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/InProcessByUser">
+        <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+      </Annotations>
+      <Annotations Target="NFA_01Service.DraftAdministrativeData/DraftIsProcessedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,8 @@
+COLUMN TABLE NFA_01_Questionaire (
+  event_id NVARCHAR(5000),
+  question NVARCHAR(100),
+  Guruprasad NVARCHAR(100),
+  Supplier_Demo2 NVARCHAR(100)
+) WITH ASSOCIATIONS (
+  MANY TO ONE JOIN NFA_01_Source_Events AS source_Events ON (source_Events.event_id = event_id)
+)
