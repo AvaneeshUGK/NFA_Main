@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "Run NFA_01-2",
+      "runtimeExecutable": "cds",
+      "request": "launch",
+      "args": [
+        "watch",
+        "--open"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "type": "node",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "PreLaunchTask for Run NFA_01-2",
+      "envFile": "${workspaceFolder}/env/.env2",
+      "env": {
+        "run.config": "{\"handlerId\":\"lcap_run_config_handler_id\",\"runnableId\":\"{\\\"projectPath\\\":\\\"/home/user/projects/NFA_01\\\",\\\"profileName\\\":\\\"\\\"}\"}"
+      }
+    }
+  ],
+  "version": "0.2.0"
+}
