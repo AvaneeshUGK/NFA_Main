@@ -1,0 +1,318 @@
+{
+    "_version": "1.48.0",
+    "sap.app": {
+        "id": "NFA01.NFA",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.10.6",
+            "toolsId": "942c3b01-3171-465a-aefa-bbaa3cca6f52"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "service/NFA_01/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "NFA01NFA-display": {
+                    "semanticObject": "NFA01NFA",
+                    "action": "display",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
+                }
+            },
+            "outbounds": {
+                "PreviewAppPreview-display": {
+                    "semanticObject": "PreviewAppPreview",
+                    "action": "display",
+                    "parameters": {}
+                },
+                "PreviewAppHeaderDisplay-display": {
+                    "semanticObject": "PreviewAppHeaderDisplay",
+                    "action": "display",
+                    "parameters": {}
+                },
+                "VersionAssociationDisplay-display": {
+                    "semanticObject": "VersionAssociationDisplay",
+                    "action": "display",
+                    "parameters": {}
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.108.7",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {},
+                "sap.ui.mdc": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "NFA01.NFA.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "Source_EventsList",
+                    "target": "Source_EventsList"
+                },
+                {
+                    "pattern": "Source_Events({key}):?query:",
+                    "name": "Source_EventsObjectPage",
+                    "target": "Source_EventsObjectPage"
+                },
+                {
+                    "pattern": "Source_Events({key})/questionaire({key2}):?query:",
+                    "name": "QuestionaireObjectPage",
+                    "target": "QuestionaireObjectPage"
+                }
+            ],
+            "targets": {
+                "Source_EventsList": {
+                    "type": "Component",
+                    "id": "Source_EventsList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "Source_Events",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "Source_Events": {
+                                    "detail": {
+                                        "route": "Source_EventsObjectPage"
+                                    }
+                                }
+                            },
+                            "initialLoad": "Enabled",
+                            "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#tableView",
+                            "hideFilterBar": false,
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "type": "GridTable"
+                                    },
+                                    "columns": {
+                                        "DataField::Srcevtname": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::Createdby": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::Version": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::Desc": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::status": {
+                                            "width": "20%"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Source_EventsObjectPage": {
+                    "type": "Component",
+                    "id": "Source_EventsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Source_Events",
+                            "navigation": {
+                                "questionaire": {
+                                    "detail": {
+                                        "route": "QuestionaireObjectPage"
+                                    }
+                                }
+                            },
+                            "controlConfiguration": {
+                                "questionaire/@com.sap.vocabularies.UI.v1.LineItem#Questions": {
+                                    "columns": {
+                                        "DataField::source_Events::questionaire::Supplier_Demo2": {
+                                            "width": "33.33%"
+                                        },
+                                        "DataField::Guruprasad": {
+                                            "width": "33.33%"
+                                        },
+                                        "DataField::question": {
+                                            "width": "33.33%"
+                                        }
+                                    },
+                                    "actions": {
+                                        "AddQuestion": {
+                                            "press": "NFA01.NFA.ext.controller.AddQuestion.AddQuestion",
+                                            "visible": true,
+                                            "enabled": true,
+                                            "requiresSelection": false,
+                                            "text": "Add"
+                                        }
+                                    },
+                                    "tableSettings": {
+                                        "condensedTableLayout": true
+                                    }
+                                },
+                                "details/@com.sap.vocabularies.UI.v1.LineItem#Details": {
+                                    "columns": {
+                                        "DataField::Itemname": {
+                                            "width": "17%"
+                                        },
+                                        "DataField::Description": {
+                                            "width": "17%"
+                                        },
+                                        "DataField::Quantity": {
+                                            "width": "17%"
+                                        },
+                                        "DataField::Unit": {
+                                            "width": "17%"
+                                        },
+                                        "DataField::Guruprasad": {
+                                            "width": "17%"
+                                        },
+                                        "DataField::Supplier_Demo2": {
+                                            "width": "17%"
+                                        }
+                                    }
+                                },
+                                "questionaire/@com.sap.vocabularies.UI.v1.LineItem#Details": {
+                                    "actions": {
+                                        "AddDetails": {
+                                            "press": "NFA01.NFA.ext.controller.AddDetails.AddDetails",
+                                            "visible": true,
+                                            "enabled": true,
+                                            "requiresSelection": false,
+                                            "text": "Add"
+                                        }
+                                    }
+                                }
+                            },
+                            "content": {
+                                "header": {
+                                    "actions": {
+                                        "pdfupload": {
+                                            "press": "NFA01.NFA.ext.controller.Draftattachment.upload",
+                                            "visible": true,
+                                            "enabled": true,
+                                            "text": "Upload"
+                                        },
+                                        "generatepdf": {
+                                            "press": "NFA01.NFA.ext.controller.Generatepdf.generatefunc",
+                                            "visible": true,
+                                            "enabled": true,
+                                            "text": "Download Pdf"
+                                        }
+                                    }
+                                },
+                                "body": {
+                                    "sections": {}
+                                }
+                            }
+                        }
+                    }
+                },
+                "QuestionaireObjectPage": {
+                    "type": "Component",
+                    "id": "QuestionaireObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "Questionaire"
+                        }
+                    }
+                }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {
+                    "sap.fe.templates.ListReport.ListReportController#NFA01.NFA::Source_EventsList": {
+                        "controllerName": "NFA01.NFA.ext.controller.List_Controller"
+                    },
+                    "sap.fe.templates.ListReport.ListReportController": {
+                        "controllerName": "NFA01.NFA.ext.fragment.CustomView"
+                    },
+                    "sap.fe.templates.ObjectPage.ObjectPageController#NFA01.NFA::Source_EventsObjectPage": {
+                        "controllerName": "NFA01.NFA.ext.controller.ObjPage"
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "lcap.NFA_01"
+    }
+}

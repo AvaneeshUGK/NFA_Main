@@ -1,0 +1,2 @@
+sap.ui.define(["sap/m/MessageToast"],function(e){"use strict";return{onPress:function(o){debugger;const s=o;const t=s.getSource();const r=s.getParameters();const a=s.oSource.oPropagatedProperties.oModels.viewData.observeData();e.show("Custom handler invoked.")}}});
+//# sourceMappingURL=Source_events.controller.js.map

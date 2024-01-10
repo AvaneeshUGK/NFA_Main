@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+        <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="NFA_01Service" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Source_Events" EntityType="NFA_01Service.Source_Events">
+                    <NavigationPropertyBinding Path="questionaire" Target="Questionaire"/>
+                </EntitySet>
+                <EntitySet Name="Questionaire" EntityType="NFA_01Service.Questionaire">
+                    <NavigationPropertyBinding Path="source_Events" Target="Source_Events"/>
+                </EntitySet>
+                <EntitySet Name="Details" EntityType="NFA_01Service.Details"/>
+            </EntityContainer>
+            <EntityType Name="Source_Events">
+                <Key>
+                    <PropertyRef Name="event_id"/>
+                </Key>
+                <Property Name="event_id" Type="Edm.String" Nullable="false"/>
+                <Property Name="Srcevtname" Type="Edm.String"/>
+                <Property Name="Createdby" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Desc" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Version" Type="Edm.String" MaxLength="10"/>
+                <Property Name="status" Type="Edm.String" MaxLength="100"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+                <NavigationProperty Name="questionaire" Type="Collection(NFA_01Service.Questionaire)" Partner="source_Events">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Questionaire">
+                <Property Name="question" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Guruprasad" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Supplier_Demo2" Type="Edm.String" MaxLength="100"/>
+                <NavigationProperty Name="source_Events" Type="NFA_01Service.Source_Events" Partner="questionaire">
+                    <ReferentialConstraint Property="source_Events_event_id" ReferencedProperty="event_id"/>
+                </NavigationProperty>
+                <Property Name="source_Events_event_id" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Details">
+                <Property Name="Itemname" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Description" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Quantity" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Guruprasad" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Supplier_Demo2" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <Annotations Target="NFA_01Service.EntityContainer/Source_Events">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="NFA_01Service.EntityContainer/Questionaire">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="NFA_01Service.EntityContainer/Details">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record Type="Capabilities.DeleteRestrictionsType">
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record Type="Capabilities.InsertRestrictionsType">
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record Type="Capabilities.UpdateRestrictionsType">
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

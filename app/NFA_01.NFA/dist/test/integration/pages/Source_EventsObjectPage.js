@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/ObjectPage"],function(e){"use strict";var t={actions:{},assertions:{}};return new e({appId:"NFA01.NFA",componentId:"Source_EventsObjectPage",entitySet:"Source_Events"},t)});
+//# sourceMappingURL=Source_EventsObjectPage.js.map

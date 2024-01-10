@@ -1,0 +1,2 @@
+sap.ui.require(["sap/fe/test/JourneyRunner","NFA01/NFA/test/integration/FirstJourney","NFA01/NFA/test/integration/pages/Source_EventsList","NFA01/NFA/test/integration/pages/Source_EventsObjectPage","NFA01/NFA/test/integration/pages/QuestionaireObjectPage"],function(e,t,n,r,s){"use strict";var e=new e({launchUrl:sap.ui.require.toUrl("NFA01/NFA")+"/index.html"});e.run({pages:{onTheSource_EventsList:n,onTheSource_EventsObjectPage:r,onTheQuestionaireObjectPage:s}},t.run)});
+//# sourceMappingURL=opaTests.qunit.js.map

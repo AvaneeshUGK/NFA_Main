@@ -1,0 +1,2 @@
+sap.ui.define(["sap/m/MessageToast","sap/ui/core/library"],function(e,s){"use strict";return{TestButton:function(s){debugger;var o="/Source_Events";var a=new sap.ui.model.odata.ODataModel(o);const n=s;var t;a.read("",{success:function(e){console.log(e);t=e}});e.show("Custom handler invoked.")}}});
+//# sourceMappingURL=TestButton.js.map
